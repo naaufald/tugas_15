@@ -45,7 +45,6 @@ if 'data' in st.session_state and not st.session_state.data.empty:
     total_pemasukan = st.session_state.data[st.session_state.data['Kategori'] == 'Pemasukan']['Jumlah'].sum()
     total_pengeluaran = st.session_state.data[st.session_state.data['Kategori'] == 'Pengeluaran']['Jumlah'].sum()
     
-    # Menghitung sisa
     sisa = total_pemasukan - total_pengeluaran
     
     # Menampilkan total dan sisa
@@ -55,6 +54,11 @@ if 'data' in st.session_state and not st.session_state.data.empty:
 
     # Membuat grafik bar menggunakan st.bar_chart
     summary = st.session_state.data.groupby('Kategori')['Jumlah'].sum().reset_index()
+
+    # Menampilkan grafik garis untuk total pemasukan dan pengeluaran
+    total_summary = pd.DataFrame({
+        'Kategori': ['Pemasukan', 'Pengeluaran'],
+        'Jumlah': [total_pemasukan, total_pengeluaran]
+    })
     
-    # Menampilkan grafik bar
-    st.bar_chart(summary.set_index('Kategori'))
+    st.line_chart(total_summary.set_index('Kategori'))
